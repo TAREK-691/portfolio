@@ -1,166 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarek Shikdar | Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        .profile-border { border-radius: 40px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarek Shikdar | Portfolio</title>
+  <meta name="description" content="Portfolio of Tarek Shikdar — Web Developer, UI/UX Designer, and Chatbot Builder." />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff; --fg: #1a1d2e; --card: #ffffff; --card-fg: #1a1d2e;
+      --primary: #4338e0; --primary-fg: #fff; --secondary: #e67e22; --secondary-fg: #fff;
+      --muted: #f1f3f8; --muted-fg: #6b7280; --accent: #06b6d4; --accent-fg: #fff;
+      --border: #e2e5eb; --section-alt: #f5f6fa; --radius: 0.75rem;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Sora', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .text-gradient { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; border-radius: 9999px; font-weight: 700; font-size: 0.875rem; border: none; cursor: pointer; transition: all 0.3s; }
+    .btn-primary { background: var(--secondary); color: var(--secondary-fg); }
+    .btn-primary:hover { background: var(--primary); }
+    .btn-outline { background: transparent; border: 2px solid rgba(67,56,224,0.3); color: var(--primary); }
+    .btn-outline:hover { border-color: var(--primary); background: rgba(67,56,224,0.05); }
+    .section-badge { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--secondary); padding: 0.375rem 1rem; border-radius: 9999px; border: 1px solid rgba(230,126,34,0.2); background: rgba(230,126,34,0.05); margin-bottom: 0.75rem; }
+
+    /* NAVBAR */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; padding-bottom: 1rem; }
+    .navbar .logo { font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .navbar .logo span { color: var(--secondary); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--muted-fg); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-contact { padding: 0.625rem 1.5rem; border-radius: 9999px; background: var(--primary); color: var(--primary-fg); font-size: 0.875rem; font-weight: 600; }
+    .nav-contact:hover { opacity: 0.9; }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; }
+    .mobile-menu { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .mobile-menu.active { display: flex; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 5rem; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .hero-blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+    .hero-blob-1 { width: 500px; height: 500px; background: rgba(67,56,224,0.1); top: -8rem; right: -8rem; }
+    .hero-blob-2 { width: 400px; height: 400px; background: rgba(230,126,34,0.1); bottom: -8rem; left: -8rem; }
+    .hero-status { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 1rem; border-radius: 9999px; border: 1px solid var(--border); background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); margin-bottom: 1.5rem; font-size: 0.75rem; color: var(--muted-fg); font-weight: 500; }
+    .hero-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.5rem; }
+    .hero .role { font-size: 2.5rem; font-weight: 700; color: var(--muted-fg); height: 4rem; }
+    .hero .role .cursor { display: inline-block; width: 3px; height: 1em; background: var(--secondary); margin-left: 4px; vertical-align: middle; animation: blink 1s infinite; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+    .hero p { font-size: 1.125rem; color: var(--muted-fg); max-width: 500px; margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .hero-socials { display: flex; gap: 0.75rem; }
+    .hero-socials a { width: 40px; height: 40px; border-radius: 12px; background: var(--muted); display: flex; align-items: center; justify-content: center; color: var(--muted-fg); transition: all 0.2s; }
+    .hero-socials a:hover { color: var(--primary); background: rgba(67,56,224,0.1); transform: translateY(-2px); }
+    .hero-img-wrap { display: flex; justify-content: center; }
+    .hero-img-container { position: relative; }
+    .hero-img-glow { position: absolute; inset: -12px; border-radius: 50%; background: linear-gradient(135deg, rgba(67,56,224,0.3), rgba(230,126,34,0.2), rgba(6,182,212,0.3)); filter: blur(20px); opacity: 0.6; animation: pulse 3s infinite; }
+    .hero-img-ring { position: absolute; inset: -8px; border-radius: 50%; background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--accent), var(--primary)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; padding: 3px; animation: spin 20s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hero-img { width: 280px; height: 280px; border-radius: 50%; overflow: hidden; border: 2px solid var(--border); position: relative; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-badge { position: absolute; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-radius: 1rem; padding: 0.625rem 1rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 700; animation: float 3s ease-in-out infinite; }
+    .hero-badge svg { width: 14px; height: 14px; }
+    .hero-badge.badge-1 { top: -8px; right: -16px; }
+    .hero-badge.badge-2 { bottom: -8px; left: -16px; animation-delay: 0.5s; }
+    .hero-badge.badge-3 { top: 50%; right: -32px; animation-delay: 1s; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    /* SKILLS */
+    .skills { padding: 7rem 0; background: var(--section-alt); position: relative; overflow: hidden; }
+    .skills .header { text-align: center; margin-bottom: 4rem; }
+    .skills .header h2 { font-size: 2rem; font-weight: 700; }
+    .skills .header p { color: var(--muted-fg); margin-top: 0.75rem; font-size: 0.875rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+    .skill-card { background: var(--card); border-radius: 1rem; padding: 1.75rem; border: 1px solid var(--border); transition: all 0.3s; position: relative; overflow: hidden; }
+    .skill-card:hover { border-color: rgba(67,56,224,0.2); box-shadow: 0 10px 40px rgba(0,0,0,0.08); transform: translateY(-6px); }
+    .skill-card .hover-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(67,56,224,0.05), rgba(6,182,212,0.05)); opacity: 0; transition: opacity 0.3s; }
+    .skill-card:hover .hover-bg { opacity: 1; }
+    .skill-card .content { position: relative; z-index: 1; }
+    .skill-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(67,56,224,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; transition: all 0.3s; color: var(--primary); }
+    .skill-card:hover .skill-icon { background: var(--primary); color: var(--primary-fg); box-shadow: 0 4px 12px rgba(67,56,224,0.25); }
+    .skill-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .skill-card p { font-size: 0.875rem; color: var(--muted-fg); margin-bottom: 1rem; }
+    .progress-bar { display: flex; align-items: center; gap: 0.75rem; }
+    .progress-track { flex: 1; height: 6px; border-radius: 9999px; background: var(--muted); overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 1.5s ease-out; }
+    .progress-label { font-size: 0.75rem; font-weight: 600; color: var(--muted-fg); min-width: 2rem; text-align: right; }
+
+    /* ABOUT */
+    .about { padding: 7rem 0; position: relative; overflow: hidden; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-img-wrap { position: relative; max-width: 400px; margin: 0 auto; }
+    .about-img { aspect-ratio: 4/5; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 2px solid var(--border); }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; }
+    .about-stat { position: absolute; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-radius: 1rem; padding: 1rem 1.25rem; border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .about-stat.stat-1 { bottom: -20px; right: -20px; }
+    .about-stat.stat-2 { top: -20px; left: -20px; }
+    .about-stat .num { font-size: 1.5rem; font-weight: 700; font-family: 'Sora'; }
+    .about-stat .num.c1 { color: var(--primary); }
+    .about-stat .num.c2 { color: var(--secondary); }
+    .about-stat .txt { font-size: 0.75rem; color: var(--muted-fg); }
+    .about-deco-1 { position: absolute; bottom: -32px; left: -32px; width: 96px; height: 96px; border-radius: 1rem; background: linear-gradient(135deg, rgba(230,126,34,0.2), rgba(230,126,34,0.05)); z-index: -1; }
+    .about-deco-2 { position: absolute; top: -32px; right: -32px; width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, rgba(67,56,224,0.2), rgba(67,56,224,0.05)); z-index: -1; }
+    .about h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .about p.bio { color: var(--muted-fg); margin-bottom: 1.5rem; }
+    .interests { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .interest-tag { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 9999px; background: var(--muted); border: 1px solid var(--border); font-size: 0.875rem; font-weight: 500; }
+    .interest-tag svg { width: 14px; height: 14px; color: var(--primary); }
+    .edu-title { font-size: 1.125rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .edu-title svg { color: var(--primary); }
+    .timeline { position: relative; padding-left: 2.5rem; }
+    .timeline::before { content: ''; position: absolute; left: 15px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+    .timeline-item { position: relative; padding-bottom: 1.5rem; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot { position: absolute; left: -25px; top: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--primary); background: var(--bg); }
+    .timeline-card { background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border-radius: 0.75rem; padding: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; transition: all 0.2s; }
+    .timeline-card:hover { border-color: rgba(67,56,224,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .timeline-card .degree { font-weight: 600; font-size: 0.875rem; }
+    .timeline-card .school { font-size: 0.75rem; color: var(--muted-fg); margin-top: 2px; }
+    .timeline-card .year { font-size: 0.75rem; font-weight: 600; color: var(--secondary); }
+    .timeline-card .gpa { font-size: 0.75rem; color: var(--muted-fg); }
+
+    /* PROJECTS */
+    .projects { padding: 7rem 0; background: var(--section-alt); position: relative; overflow: hidden; }
+    .projects .header { text-align: center; margin-bottom: 4rem; }
+    .projects .header h2 { font-size: 2rem; font-weight: 700; }
+    .projects .header p { color: var(--muted-fg); margin-top: 0.75rem; font-size: 0.875rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+    .project-card { background: var(--card); border-radius: 1rem; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; }
+    .project-card:hover { border-color: rgba(67,56,224,0.2); box-shadow: 0 16px 48px rgba(0,0,0,0.1); transform: translateY(-8px); }
+    .project-visual { height: 200px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .project-visual.grad-1 { background: linear-gradient(135deg, rgba(67,56,224,0.2), rgba(67,56,224,0.1), rgba(6,182,212,0.2)); }
+    .project-visual.grad-2 { background: linear-gradient(135deg, rgba(230,126,34,0.2), rgba(230,126,34,0.1), rgba(67,56,224,0.2)); }
+    .project-visual .grid-pattern { position: absolute; inset: 0; opacity: 0.04; background-image: radial-gradient(var(--fg) 1px, transparent 1px); background-size: 20px 20px; }
+    .project-icon-box { width: 80px; height: 80px; border-radius: 1rem; background: rgba(255,255,255,0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid var(--border); transition: transform 0.3s; }
+    .project-card:hover .project-icon-box { transform: scale(1.1) rotate(5deg); }
+    .project-icon-box svg { width: 36px; height: 36px; }
+    .project-icon-box.c1 svg { color: var(--primary); }
+    .project-icon-box.c2 svg { color: var(--secondary); }
+    .project-info { padding: 1.5rem; }
+    .project-info h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; transition: color 0.2s; }
+    .project-card:hover .project-info h3 { color: var(--primary); }
+    .project-info p { font-size: 0.875rem; color: var(--muted-fg); margin-bottom: 1.25rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .project-tags span { font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: var(--muted); color: var(--muted-fg); border: 1px solid var(--border); }
+
+    /* CONTACT */
+    .contact { padding: 7rem 0; position: relative; overflow: hidden; }
+    .contact .header { text-align: center; margin-bottom: 4rem; }
+    .contact .header h2 { font-size: 2rem; font-weight: 700; }
+    .contact .header p { color: var(--muted-fg); margin-top: 0.75rem; font-size: 0.875rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 900px; margin: 0 auto; }
+    .contact-links h3, .contact-form h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-radius: 0.75rem; background: var(--card); border: 1px solid var(--border); margin-bottom: 0.75rem; transition: all 0.2s; }
+    .contact-item:hover { border-color: rgba(67,56,224,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateX(4px); }
+    .contact-item-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(67,56,224,0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; transition: all 0.3s; }
+    .contact-item:hover .contact-item-icon { background: var(--primary); color: var(--primary-fg); }
+    .contact-item-icon svg { width: 18px; height: 18px; }
+    .contact-item-label { font-size: 0.75rem; color: var(--muted-fg); }
+    .contact-item-value { font-size: 0.875rem; font-weight: 500; }
+    .extra-socials { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+    .extra-socials a { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; font-weight: 500; color: var(--muted-fg); padding: 0.5rem 0.75rem; border-radius: 9999px; background: var(--muted); border: 1px solid var(--border); transition: all 0.2s; }
+    .extra-socials a:hover { color: var(--primary); border-color: rgba(67,56,224,0.2); }
+    .contact-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .contact-form input, .contact-form textarea { width: 100%; padding: 0.875rem 1rem; border-radius: 0.75rem; background: var(--card); border: 1px solid var(--border); font-size: 0.875rem; font-family: 'Inter', sans-serif; color: var(--fg); outline: none; transition: all 0.2s; margin-bottom: 1rem; }
+    .contact-form input:focus, .contact-form textarea:focus { border-color: rgba(67,56,224,0.5); box-shadow: 0 0 0 3px rgba(67,56,224,0.1); }
+    .contact-form textarea { resize: none; }
+    .contact-form .submit-btn { width: 100%; padding: 0.875rem; border-radius: 9999px; background: var(--primary); color: var(--primary-fg); font-size: 0.875rem; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.2s; }
+    .contact-form .submit-btn:hover { box-shadow: 0 8px 24px rgba(67,56,224,0.25); }
+
+    /* FOOTER */
+    .footer { border-top: 1px solid var(--border); background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); }
+    .footer .container { padding-top: 3rem; padding-bottom: 3rem; }
+    .footer-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.875rem; color: var(--muted-fg); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-socials { display: flex; gap: 0.75rem; }
+    .footer-socials a { width: 36px; height: 36px; border-radius: 8px; background: var(--muted); display: flex; align-items: center; justify-content: center; color: var(--muted-fg); transition: all 0.2s; }
+    .footer-socials a:hover { color: var(--primary); background: rgba(67,56,224,0.1); }
+    .footer-bottom { border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 1.5rem; text-align: center; font-size: 0.75rem; color: var(--muted-fg); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links, .nav-contact { display: none; }
+      .menu-toggle { display: block; }
+      .hero-grid, .about-grid, .contact-grid, .projects-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.5rem; }
+      .hero .role { font-size: 1.75rem; height: 3rem; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .hero-img { width: 220px; height: 220px; }
+      .hero-badge.badge-3 { display: none; }
+      .contact-form .row { grid-template-columns: 1fr; }
+      .footer-content { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body>
 
-    <nav class="fixed w-full z-50 glass border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-tighter">TAREK<span class="text-blue-600">.</span></h1>
-            <div class="space-x-8 hidden md:flex font-medium text-sm">
-                <a href="#home" class="hover:text-blue-600 transition">Home</a>
-                <a href="#about" class="hover:text-blue-600 transition">About</a>
-                <a href="#projects" class="hover:text-blue-600 transition">Projects</a>
-                <a href="#contact" class="hover:text-blue-600 transition text-blue-600 font-bold">Contact Me</a>
-            </div>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#home" class="logo">Tarek<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="nav-contact">Contact Me</a>
+      <button class="menu-toggle" onclick="document.getElementById('mobileMenu').classList.toggle('active')" aria-label="Menu">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home" onclick="this.parentElement.classList.remove('active')">Home</a>
+      <a href="#about" onclick="this.parentElement.classList.remove('active')">About</a>
+      <a href="#skills" onclick="this.parentElement.classList.remove('active')">Skills</a>
+      <a href="#projects" onclick="this.parentElement.classList.remove('active')">Projects</a>
+      <a href="#contact" onclick="this.parentElement.classList.remove('active')">Contact</a>
+      <a href="#contact" class="nav-contact" onclick="this.parentElement.classList.remove('active')">Contact Me</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-status"><span class="dot"></span> Available for projects</div>
+          <h1>Hello, I'm <span class="text-gradient">Tarek</span></h1>
+          <div class="role"><span id="typed-text"></span><span class="cursor"></span></div>
+          <p>Diploma student in Civil Engineering with a strong passion for web development, coding, and technology exploration. Building beautiful digital experiences.</p>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary">View Projects</a>
+            <a href="#about" class="btn btn-outline">About Me</a>
+          </div>
+          <div class="hero-socials">
+            <a href="https://github.com/TAREK-691" target="_blank" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+            <a href="https://www.facebook.com/Classy.Tarek" target="_blank" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/def.not_tarek" target="_blank" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          </div>
         </div>
-    </nav>
-
-    <section id="home" class="pt-32 pb-20 px-6">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-                <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-widest">Web Developer & Engineer</span>
-                <h1 class="text-5xl md:text-7xl font-bold mt-6 leading-tight">I'm Tarek <br><span class="text-blue-600">Shikdar</span></h1>
-                <p class="text-slate-600 mt-6 text-lg leading-relaxed max-w-md">
-                    Diploma student in <b>Civil Engineering</b> with a passion for coding. I build modern web experiences, Messenger chatbots, and love exploring new tech. 🕹️
-                </p>
-                <div class="mt-10 flex gap-4">
-                    <a href="#contact" class="bg-slate-900 text-white px-8 py-4 rounded-2xl hover:bg-blue-600 transition shadow-lg shadow-blue-200 font-semibold">Let's Connect</a>
-                    <a href="https://github.com/TAREK-691" target="_blank" class="border border-slate-300 px-8 py-4 rounded-2xl hover:bg-white transition flex items-center gap-2 font-semibold">GitHub</a>
-                </div>
+        <div class="hero-img-wrap">
+          <div class="hero-img-container">
+            <div class="hero-img-glow"></div>
+            <div class="hero-img-ring"></div>
+            <div class="hero-img">
+              <img src="https://ui-avatars.com/api/?name=Tarek+Shikdar&size=280&background=4338e0&color=fff&font-size=0.4" alt="Tarek Shikdar" />
             </div>
-            
-            <div class="order-1 md:order-2 relative flex justify-center">
-                <div class="absolute -inset-4 bg-blue-100 rounded-[50px] -z-10 transform -rotate-3 opacity-50"></div>
-                <img src="https://i.postimg.cc/85QTCtSg/IMG-2974.jpg" 
-                     alt="Tarek Shikdar" 
-                     class="w-80 h-80 md:w-[420px] md:h-[420px] profile-border object-cover shadow-2xl border-8 border-white">
-                
-                <div class="absolute bottom-4 right-4 bg-white p-4 rounded-2xl shadow-xl border border-slate-50 hidden md:block">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Tech Stack</p>
-                    <p class="text-sm font-bold text-slate-800 mt-1">HTML • CSS • JS • UI/UX</p>
-                </div>
+            <div class="hero-badge badge-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span>5+ Skills</span>
             </div>
+            <div class="hero-badge badge-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <span>Web & Design</span>
+            </div>
+            <div class="hero-badge badge-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="3"/></svg>
+              <span>Chatbots</span>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section id="about" class="py-24 px-6 bg-white">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold">My Educational Journey</h2>
-                <div class="h-1 w-20 bg-blue-600 mx-auto mt-4 rounded-full"></div>
-            </div>
-            
-            <div class="space-y-12">
-                <div class="flex gap-6 relative">
-                    <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold shrink-0 z-10">1</div>
-                        <div class="w-0.5 h-full bg-slate-100 absolute top-0"></div>
-                    </div>
-                    <div class="pb-8">
-                        <h3 class="text-blue-600 font-bold text-sm tracking-widest uppercase">2023 - Present</h3>
-                        <h4 class="text-2xl font-bold text-slate-800">Diploma in Civil Engineering</h4>
-                        <p class="text-slate-500 font-medium">Tangail Polytechnic Institute</p>
-                        <p class="mt-2 text-slate-600">Aiming to transition into Computer Science for higher studies abroad. 🌍</p>
-                    </div>
-                </div>
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <div class="container">
+      <div class="header">
+        <span class="section-badge">My Skills</span>
+        <h2>What I Can Do</h2>
+        <p>Constantly learning and growing — here are the tools and technologies I work with.</p>
+      </div>
+      <div class="skills-grid" id="skillsGrid"></div>
+    </div>
+  </section>
 
-                <div class="flex gap-6 relative">
-                    <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center font-bold shrink-0 z-10">2</div>
-                        <div class="w-0.5 h-full bg-slate-100 absolute top-0"></div>
-                    </div>
-                    <div class="pb-8">
-                        <h3 class="text-slate-400 font-bold text-sm tracking-widest uppercase">2023</h3>
-                        <h4 class="text-2xl font-bold text-slate-800">Secondary School Certificate (SSC)</h4>
-                        <p class="text-slate-500 font-medium">Shaliaboho Public High School | GPA: 4.50</p>
-                    </div>
-                </div>
-
-                <div class="flex gap-6 relative">
-                    <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center font-bold shrink-0 z-10">3</div>
-                    </div>
-                    <div>
-                        <h3 class="text-slate-400 font-bold text-sm tracking-widest uppercase">2020</h3>
-                        <h4 class="text-2xl font-bold text-slate-800">Junior School Certificate (JSC)</h4>
-                        <p class="text-slate-500 font-medium">Shaliaboho Public High School | Auto Pass (Pandemic)</p>
-                    </div>
-                </div>
-            </div>
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-wrap">
+          <div class="about-img">
+            <img src="https://ui-avatars.com/api/?name=TS&size=400&background=4338e0&color=fff&font-size=0.5" alt="Tarek Shikdar" />
+          </div>
+          <div class="about-stat stat-1">
+            <p class="num c1">5+</p>
+            <p class="txt">Skills Mastered</p>
+          </div>
+          <div class="about-stat stat-2">
+            <p class="num c2">2+</p>
+            <p class="txt">Projects Done</p>
+          </div>
+          <div class="about-deco-1"></div>
+          <div class="about-deco-2"></div>
         </div>
-    </section>
-
-    <section id="projects" class="py-24 px-6 bg-slate-50">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold mb-12 border-l-8 border-blue-600 pl-6">Latest Projects</h2>
-            <div class="grid md:grid-cols-2 gap-10">
-                <div class="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl transition duration-500">
-                    <div class="p-10">
-                        <span class="text-4xl">🤖</span>
-                        <h3 class="text-2xl font-bold mt-6 mb-3 group-hover:text-blue-600 transition">Messenger Chatbot</h3>
-                        <p class="text-slate-600 leading-relaxed mb-6 text-sm">Developed automated chatbot systems for Facebook Messenger, providing instant replies and service integration.</p>
-                        <span class="inline-block bg-slate-100 px-4 py-1 rounded-full text-[10px] font-bold uppercase text-slate-500">Node.js / API</span>
-                    </div>
-                </div>
-                <div class="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl transition duration-500">
-                    <div class="p-10">
-                        <span class="text-4xl">🎨</span>
-                        <h3 class="text-2xl font-bold mt-6 mb-3 group-hover:text-blue-600 transition">Personal Portfolio</h3>
-                        <p class="text-slate-600 leading-relaxed mb-6 text-sm">A modern minimalist portfolio designed to showcase engineering and coding skills in one professional layout.</p>
-                        <span class="inline-block bg-slate-100 px-4 py-1 rounded-full text-[10px] font-bold uppercase text-slate-500">HTML / Tailwind CSS</span>
-                    </div>
-                </div>
+        <div>
+          <span class="section-badge">About Me</span>
+          <h2>Designing Solutions,<br><span class="text-gradient">Not Just Visuals</span></h2>
+          <p class="bio">I'm Tarek Shikdar, currently studying Civil Engineering while passionately learning web development. My goal is to pursue Computer Science abroad and become a professional web developer. I love exploring new technologies, coding, and gaming in my free time.</p>
+          <div class="interests">
+            <div class="interest-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg> Web Dev</div>
+            <div class="interest-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M14 12h4"/></svg> Gaming</div>
+            <div class="interest-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Tech</div>
+          </div>
+          <div class="edu-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Education
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-card">
+                <div><p class="degree">JSC</p><p class="school">📍 Shaliaboho Public High School</p></div>
+                <div style="text-align:right"><p class="year">📅 2020</p><p class="gpa">GPA: Auto Pass</p></div>
+              </div>
             </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-24 px-6">
-        <div class="max-w-6xl mx-auto bg-slate-900 rounded-[40px] p-10 md:p-20 text-center text-white relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600 rounded-full blur-[120px] opacity-20 -mr-32 -mt-32"></div>
-            
-            <h2 class="text-4xl md:text-6xl font-bold mb-8">Ready to start a <br><span class="text-blue-400">new project?</span></h2>
-            <p class="text-slate-400 text-lg mb-12 max-w-xl mx-auto">Feel free to reach out for web design, chatbot development, or just to chat about tech!</p>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <a href="mailto:tarekshikdar849@gmail.com" class="bg-slate-800 p-6 rounded-2xl hover:bg-blue-600 transition">
-                    <p class="text-xs text-slate-400 uppercase font-bold mb-2">Email</p>
-                    <p class="font-medium text-sm truncate">tarekshikdar849@gmail.com</p>
-                </a>
-                <a href="tel:01785557724" class="bg-slate-800 p-6 rounded-2xl hover:bg-blue-600 transition">
-                    <p class="text-xs text-slate-400 uppercase font-bold mb-2">Phone</p>
-                    <p class="font-medium">01785557724</p>
-                </a>
-                <a href="https://facebook.com/Classy.Tarek" target="_blank" class="bg-slate-800 p-6 rounded-2xl hover:bg-blue-600 transition">
-                    <p class="text-xs text-slate-400 uppercase font-bold mb-2">Facebook</p>
-                    <p class="font-medium">Classy.Tarek</p>
-                </a>
-                <a href="https://instagram.com/def.not_tarek" target="_blank" class="bg-slate-800 p-6 rounded-2xl hover:bg-blue-600 transition">
-                    <p class="text-xs text-slate-400 uppercase font-bold mb-2">Instagram</p>
-                    <p class="font-medium">def.not_tarek</p>
-                </a>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-card">
+                <div><p class="degree">SSC</p><p class="school">📍 Shaliaboho Public High School</p></div>
+                <div style="text-align:right"><p class="year">📅 2023</p><p class="gpa">GPA: 4.50</p></div>
+              </div>
             </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-card">
+                <div><p class="degree">Diploma in Civil Engineering</p><p class="school">📍 Tangail Polytechnic Institute</p></div>
+                <div style="text-align:right"><p class="year">📅 2023-24</p><p class="gpa">GPA: Ongoing</p></div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <a href="#contact" class="btn btn-primary" style="background:var(--primary)">Get In Touch</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <footer class="py-12 text-center text-slate-400 text-sm">
-        <p>© 2026 Tarek Shikdar. All rights reserved. 🎨</p>
-        <div class="flex justify-center gap-6 mt-4">
-            <a href="https://github.com/TAREK-691" class="hover:text-slate-900 transition">GitHub</a>
-            <a href="https://x.com/tarekshikdar01" class="hover:text-slate-900 transition">X (Twitter)</a>
-            <a href="https://tiktok.com/@classy.tarek" class="hover:text-slate-900 transition">TikTok</a>
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <div class="header">
+        <span class="section-badge">Portfolio</span>
+        <h2>My Projects</h2>
+        <p>A showcase of what I've built — from chatbots to beautiful web experiences.</p>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-visual grad-1">
+            <div class="grid-pattern"></div>
+            <div class="project-icon-box c1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Messenger Chatbot</h3>
+            <p>Developed an automated chatbot for Facebook Messenger with interactive responses, menu navigation, and user engagement features.</p>
+            <div class="project-tags">
+              <span>Chatbot</span><span>Automation</span><span>Facebook API</span>
+            </div>
+          </div>
         </div>
-    </footer>
+        <div class="project-card">
+          <div class="project-visual grad-2">
+            <div class="grid-pattern"></div>
+            <div class="project-icon-box c2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Personal Portfolio Website</h3>
+            <p>Designed and built a modern, responsive portfolio website to showcase skills, projects, and professional journey.</p>
+            <div class="project-tags">
+              <span>HTML/CSS</span><span>UI/UX</span><span>Web Design</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="header">
+        <span class="section-badge">Get In Touch</span>
+        <h2>Let's Work Together</h2>
+        <p>Have a project in mind or want to collaborate? I'd love to hear from you.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-links">
+          <h3>Contact Info</h3>
+          <a href="mailto:tarekshikdar849@gmail.com" class="contact-item" target="_blank">
+            <div class="contact-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><p class="contact-item-label">Email</p><p class="contact-item-value">tarekshikdar849@gmail.com</p></div>
+          </a>
+          <a href="https://wa.me/8801785557724" class="contact-item" target="_blank">
+            <div class="contact-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div><p class="contact-item-label">Phone / WhatsApp</p><p class="contact-item-value">01785557724</p></div>
+          </a>
+          <a href="https://github.com/TAREK-691" class="contact-item" target="_blank">
+            <div class="contact-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+            <div><p class="contact-item-label">GitHub</p><p class="contact-item-value">TAREK-691</p></div>
+          </a>
+          <a href="https://www.facebook.com/Classy.Tarek" class="contact-item" target="_blank">
+            <div class="contact-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+            <div><p class="contact-item-label">Facebook</p><p class="contact-item-value">Classy.Tarek</p></div>
+          </a>
+          <a href="https://www.instagram.com/def.not_tarek" class="contact-item" target="_blank">
+            <div class="contact-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            <div><p class="contact-item-label">Instagram</p><p class="contact-item-value">def.not_tarek</p></div>
+          </a>
+          <div class="extra-socials">
+            <a href="https://www.tiktok.com/@classy.tarek" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> TikTok
+            </a>
+            <a href="https://x.com/tarekshikdar01" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg> X (Twitter)
+            </a>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3>Send a Message</h3>
+          <form onsubmit="event.preventDefault(); alert('Message sent! (demo)')">
+            <div class="row">
+              <input type="text" placeholder="Your Name" required />
+              <input type="email" placeholder="Your Email" required />
+            </div>
+            <input type="text" placeholder="Subject" />
+            <textarea rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit" class="submit-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="#home" class="logo" style="font-family:'Sora';font-size:1.5rem;font-weight:700;color:var(--primary)">Tarek<span style="color:var(--secondary)">.</span></a>
+        <nav class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="footer-socials">
+          <a href="https://github.com/TAREK-691" target="_blank" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+          <a href="https://www.facebook.com/Classy.Tarek" target="_blank" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://www.instagram.com/def.not_tarek" target="_blank" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2025 Tarek Shikdar. Made with ❤️</div>
+    </div>
+  </footer>
+
+  <script>
+    // Typing effect
+    const roles = ["Web Developer", "UI/UX Designer", "Chatbot Builder", "Tech Enthusiast"];
+    let roleIdx = 0, charIdx = 0, deleting = false;
+    const typedEl = document.getElementById("typed-text");
+    function typeEffect() {
+      const current = roles[roleIdx];
+      if (!deleting) {
+        typedEl.textContent = current.slice(0, ++charIdx);
+        if (charIdx === current.length) { setTimeout(() => { deleting = true; typeEffect(); }, 1500); return; }
+      } else {
+        typedEl.textContent = current.slice(0, --charIdx);
+        if (charIdx === 0) { deleting = false; roleIdx = (roleIdx + 1) % roles.length; }
+      }
+      setTimeout(typeEffect, deleting ? 40 : 80);
+    }
+    typeEffect();
+
+    // Skills generation
+    const skills = [
+      { title: "HTML & CSS", desc: "Building responsive, semantic web pages with modern CSS techniques.", level: 85, icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>' },
+      { title: "UI/UX Design", desc: "Creating intuitive user interfaces with focus on user experience.", level: 75, icon: '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>' },
+      { title: "Messenger Chatbot", desc: "Developing automated chatbot solutions for Facebook Messenger.", level: 80, icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
+      { title: "Web Design", desc: "Designing visually appealing and functional website layouts.", level: 78, icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>' },
+      { title: "Web Development", desc: "Full front-end development with modern tools and frameworks.", level: 70, icon: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' },
+      { title: "Creative Design", desc: "Bringing creative ideas to life through digital design.", level: 72, icon: '<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>' },
+    ];
+    const grid = document.getElementById("skillsGrid");
+    skills.forEach((s, i) => {
+      grid.innerHTML += `
+        <div class="skill-card">
+          <div class="hover-bg"></div>
+          <div class="content">
+            <div class="skill-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${s.icon}</svg></div>
+            <h3>${s.title}</h3>
+            <p>${s.desc}</p>
+            <div class="progress-bar">
+              <div class="progress-track"><div class="progress-fill" style="width:0%" data-width="${s.level}%"></div></div>
+              <span class="progress-label">${s.level}%</span>
+            </div>
+          </div>
+        </div>`;
+    });
+
+    // Animate progress bars on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.progress-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width;
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    observer.observe(document.getElementById('skillsGrid'));
+  </script>
 </body>
 </html>
